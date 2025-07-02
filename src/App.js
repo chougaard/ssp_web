@@ -3,6 +3,7 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import AssetsSection from './components/AssetsSection';
 import MapSection from './components/MapSection';
+import AssetDetail from './components/AssetDetail';
 import { assetsData } from './data/assetsData';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [filteredAssets, setFilteredAssets] = useState(assetsData);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [currentFilter, setCurrentFilter] = useState('all');
+  const [showAssetDetail, setShowAssetDetail] = useState(false);
 
   const handleFilterChange = (filter) => {
     setCurrentFilter(filter);
@@ -26,6 +28,12 @@ function App() {
 
   const handleAssetSelect = (asset) => {
     setSelectedAsset(asset);
+    setShowAssetDetail(true);
+  };
+
+  const handleBackToList = () => {
+    setShowAssetDetail(false);
+    setSelectedAsset(null);
   };
 
   const handleNewAsset = () => {
@@ -36,21 +44,28 @@ function App() {
     <div className="app-container">
       <Sidebar />
       <main className="main-content">
-        <div className="content-wrapper">
-          <AssetsSection
-            assets={filteredAssets}
-            currentFilter={currentFilter}
-            onFilterChange={handleFilterChange}
-            onAssetSelect={handleAssetSelect}
-            onNewAsset={handleNewAsset}
-            selectedAsset={selectedAsset}
+        {showAssetDetail && selectedAsset ? (
+          <AssetDetail 
+            asset={selectedAsset} 
+            onBack={handleBackToList}
           />
-          <MapSection
-            assets={filteredAssets}
-            selectedAsset={selectedAsset}
-            onAssetSelect={handleAssetSelect}
-          />
-        </div>
+        ) : (
+          <div className="content-wrapper">
+            <AssetsSection
+              assets={filteredAssets}
+              currentFilter={currentFilter}
+              onFilterChange={handleFilterChange}
+              onAssetSelect={handleAssetSelect}
+              onNewAsset={handleNewAsset}
+              selectedAsset={selectedAsset}
+            />
+            <MapSection
+              assets={filteredAssets}
+              selectedAsset={selectedAsset}
+              onAssetSelect={handleAssetSelect}
+            />
+          </div>
+        )}
       </main>
     </div>
   );
