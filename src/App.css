@@ -1,0 +1,380 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: 60px;
+  background-color: #2d2d2d;
+  border-right: 1px solid #404040;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  position: fixed;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #4ECDC4;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+}
+
+.nav-menu {
+  list-style: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item.active .nav-link {
+  background-color: #4ECDC4;
+  color: #000;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: #8a8a8a;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #404040;
+  color: #ffffff;
+}
+
+.nav-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  margin-left: 60px;
+  background-color: #1a1a1a;
+}
+
+.content-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* Assets Section */
+.assets-section {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.section-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.btn-primary {
+  background-color: #4ECDC4;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3fbdb6;
+}
+
+/* Service Tabs */
+.service-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background-color: #2d2d2d;
+  padding: 4px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #8a8a8a;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background-color: #404040;
+  color: #ffffff;
+}
+
+/* Table Styles */
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 12px;
+  background-color: #2d2d2d;
+}
+
+.assets-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #2d2d2d;
+}
+
+.assets-table th {
+  background-color: #2d2d2d;
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: #8a8a8a;
+  border-bottom: 1px solid #404040;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.assets-table th i {
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+.assets-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #404040;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.assets-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.assets-table tbody tr:hover {
+  background-color: #363636;
+}
+
+.assets-table tbody tr.highlighted {
+  background-color: #4ECDC4 !important;
+  color: #000 !important;
+}
+
+.assets-table tbody tr.highlighted .asset-id,
+.assets-table tbody tr.highlighted .service-date {
+  color: #000 !important;
+}
+
+.asset-id {
+  font-family: 'Monaco', 'Consolas', monospace;
+  color: #8a8a8a;
+}
+
+.service-date {
+  color: #ffffff;
+}
+
+.service-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: #4ECDC4;
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #8a8a8a;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #404040;
+  color: #ffffff;
+}
+
+/* Map Section */
+.map-section {
+  width: 50%;
+  position: relative;
+}
+
+.map-container {
+  height: 100vh;
+  width: 100%;
+}
+
+/* Custom Leaflet Styles */
+.leaflet-container {
+  background-color: #2d2d2d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.leaflet-control-container .leaflet-control {
+  background-color: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+}
+
+.leaflet-control-container .leaflet-control a {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border-radius: 6px;
+}
+
+.leaflet-control-container .leaflet-control a:hover {
+  background-color: #404040;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: #2d2d2d;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.leaflet-popup-content {
+  color: #ffffff;
+  margin: 16px;
+}
+
+.leaflet-popup-tip {
+  background-color: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+.marker-popup h4 {
+  color: #4ECDC4;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.marker-popup p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .map-section {
+    width: 100%;
+    height: 50vh;
+  }
+  
+  .map-container {
+    height: 50vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .assets-section {
+    padding: 16px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .service-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .assets-table {
+    font-size: 12px;
+  }
+  
+  .assets-table th,
+  .assets-table td {
+    padding: 12px 8px;
+  }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+} 
