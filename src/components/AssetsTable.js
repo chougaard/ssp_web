@@ -5,9 +5,9 @@ const AssetsTable = ({ assets, onAssetSelect, selectedAsset }) => {
     onAssetSelect(asset);
   };
 
-  const handleEditAsset = (e, assetId) => {
+  const handleViewAsset = (e, asset) => {
     e.stopPropagation(); // Prevent row click
-    alert(`Edit asset ${assetId} functionality would be implemented here`);
+    onAssetSelect(asset);
   };
 
   return (
@@ -48,9 +48,10 @@ const AssetsTable = ({ assets, onAssetSelect, selectedAsset }) => {
               <td>
                 <button
                   className="action-btn"
-                  onClick={(e) => handleEditAsset(e, asset.id)}
+                  onClick={(e) => handleViewAsset(e, asset)}
+                  title="View asset details"
                 >
-                  <i className="fas fa-edit"></i>
+                  <i className="fas fa-eye"></i>
                 </button>
               </td>
             </tr>

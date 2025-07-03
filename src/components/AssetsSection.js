@@ -14,16 +14,18 @@ const AssetsSection = ({
     <div className="assets-section">
       <div className="section-header">
         <h1>Assets</h1>
+      </div>
+
+      <div className="assets-controls">
+        <ServiceTabs 
+          currentFilter={currentFilter}
+          onFilterChange={onFilterChange}
+        />
         <button className="btn-primary" onClick={onNewAsset}>
           <i className="fas fa-plus"></i>
           New Asset
         </button>
       </div>
-
-      <ServiceTabs 
-        currentFilter={currentFilter}
-        onFilterChange={onFilterChange}
-      />
 
       <AssetsTable 
         assets={assets}
