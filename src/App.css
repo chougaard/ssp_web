@@ -417,6 +417,34 @@ body {
   font-weight: 600;
   color: #ffffff;
   margin: 0;
+  flex: 1;
+}
+
+.add-task-btn {
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7B8 100%);
+  border: none;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.2);
+}
+
+.add-task-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+  background: linear-gradient(135deg, #45B7B8 0%, #4ECDC4 100%);
+}
+
+.add-task-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.2);
 }
 
 .asset-detail-tabs {
@@ -1755,19 +1783,30 @@ body {
   padding: 20px;
   background-color: #404040;
   border-radius: 8px;
-  border: 1px solid #555555;
+  border: 2px solid #555555;
+}
+
+.asset-selection-empty {
+  padding: 20px;
+  background-color: #404040;
+  border-radius: 8px;
+  border: 2px dashed #666666;
+}
+
+.asset-selection-empty .form-group {
+  margin-bottom: 0;
 }
 
 .asset-icon {
   width: 48px;
   height: 48px;
   background-color: #4ECDC4;
-  border-radius: 8px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #1a1a1a;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .asset-info {

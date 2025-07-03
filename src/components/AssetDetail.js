@@ -9,7 +9,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-const AssetDetail = ({ asset, onBack }) => {
+const AssetDetail = ({ asset, onBack, onAddTask }) => {
   const [activeTab, setActiveTab] = useState('operational-data');
   const [activeInfoTab, setActiveInfoTab] = useState('asset-info');
   const mapRef = useRef(null);
@@ -532,6 +532,10 @@ const AssetDetail = ({ asset, onBack }) => {
           Back to list
         </button>
         <h1 className="asset-title">ABC 9876 5432</h1>
+        <button className="add-task-btn" onClick={() => onAddTask(asset)}>
+          <i className="fas fa-plus"></i>
+          Add Task
+        </button>
       </div>
 
       <div className="asset-detail-content">

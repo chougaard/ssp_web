@@ -16,6 +16,7 @@ function App() {
   const [currentFilter, setCurrentFilter] = useState('all');
   const [showAssetDetail, setShowAssetDetail] = useState(false);
   const [currentView, setCurrentView] = useState('assets'); // 'assets', 'tasks', 'clients'
+  const [newTask, setNewTask] = useState(null); // For handling new task creation
 
   const handleFilterChange = (filter) => {
     setCurrentFilter(filter);
@@ -52,17 +53,47 @@ function App() {
     setCurrentView(view);
     setSelectedAsset(null);
     setShowAssetDetail(false);
+    setNewTask(null); // Clear new task when changing views
   };
 
   const handleBackToAssets = () => {
     setSelectedAsset(null);
     setShowAssetDetail(false);
     setCurrentView('assets');
+    setNewTask(null); // Clear new task when navigating back
+  };
+
+  const handleAddTask = (asset) => {
+    // Create a new task template with the selected asset
+    const newTaskTemplate = {
+      id: Date.now(), // Simple ID generation
+      created: new Date().toLocaleString('de-DE'),
+      source: 'manual',
+      client: '',
+      asset: asset?.id || 'ABC 9876 5432', // Use the asset ID from the selected asset
+      taskType: '',
+      deadline: '',
+      notes: '',
+      contact: '',
+      contactRole: '',
+      contactPhone: '',
+      contactEmail: '',
+      status: {
+        asset: true, // Asset is already selected
+        taskType: false,
+        deadline: false,
+        notes: false,
+        contact: false
+      }
+    };
+    
+    setNewTask(newTaskTemplate);
+    setCurrentView('tasks');
   };
 
   const renderCurrentView = () => {
     if (currentView === 'tasks') {
-      return <TaskOverview onBack={handleBackToAssets} onTaskSelect={handleTaskSelect} />;
+      return <TaskOverview onBack={handleBackToAssets} onTaskSelect={handleTaskSelect} newTask={newTask} />;
     }
 
     if (currentView === 'clients') {
@@ -74,6 +105,7 @@ function App() {
         <AssetDetail 
           asset={selectedAsset} 
           onBack={handleBackToAssets}
+          onAddTask={handleAddTask}
         />
       );
     }

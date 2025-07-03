@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const TaskOverview = ({ onBack }) => {
+const TaskOverview = ({ onBack, newTask }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [taskFilter, setTaskFilter] = useState('inbox');
 
@@ -137,6 +137,15 @@ const TaskOverview = ({ onBack }) => {
   const [tasks, setTasks] = useState(tasksData);
   const [editedTask, setEditedTask] = useState(null);
 
+  // Handle new task addition
+  React.useEffect(() => {
+    if (newTask) {
+      setTasks(prevTasks => [newTask, ...prevTasks]);
+      setSelectedTask(newTask);
+      setEditedTask({ ...newTask });
+    }
+  }, [newTask]);
+
   // Initialize with first task selected
   React.useEffect(() => {
     if (tasks.length > 0 && !selectedTask) {
@@ -151,10 +160,30 @@ const TaskOverview = ({ onBack }) => {
   };
 
   const handleTaskUpdate = (field, value) => {
-    setEditedTask(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setEditedTask(prev => {
+      const updated = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Update status based on field values
+      const newStatus = { ...prev.status };
+      if (field === 'asset') {
+        newStatus.asset = value !== '';
+      } else if (field === 'taskType') {
+        newStatus.taskType = value !== '';
+      } else if (field === 'deadline') {
+        newStatus.deadline = value !== '';
+      } else if (field === 'notes') {
+        newStatus.notes = value !== '';
+      } else if (field === 'contact' || field === 'contactRole' || field === 'contactPhone' || field === 'contactEmail') {
+        // Contact is complete if at least contact name and one contact method is filled
+        newStatus.contact = updated.contact !== '' && (updated.contactPhone !== '' || updated.contactEmail !== '');
+      }
+      
+      updated.status = newStatus;
+      return updated;
+    });
   };
 
   const handleSaveTask = () => {
@@ -178,6 +207,36 @@ const TaskOverview = ({ onBack }) => {
     setEditedTask(updatedTasks.length > 0 ? { ...updatedTasks[0] } : null);
   };
 
+  const handleNewTask = () => {
+    // Create a new task template with empty fields
+    const newTaskTemplate = {
+      id: Date.now(), // Simple ID generation
+      created: new Date().toLocaleString('de-DE'),
+      source: 'manual',
+      client: '',
+      asset: '',
+      taskType: '',
+      deadline: '',
+      notes: '',
+      contact: '',
+      contactRole: '',
+      contactPhone: '',
+      contactEmail: '',
+      status: {
+        asset: false,
+        taskType: false,
+        deadline: false,
+        notes: false,
+        contact: false
+      }
+    };
+    
+    // Add the new task to the top of the list
+    setTasks(prevTasks => [newTaskTemplate, ...prevTasks]);
+    setSelectedTask(newTaskTemplate);
+    setEditedTask({ ...newTaskTemplate });
+  };
+
   const getSourceIcon = (source) => {
     switch (source) {
       case 'email':
@@ -186,6 +245,8 @@ const TaskOverview = ({ onBack }) => {
         return 'fas fa-phone';
       case 'calendar':
         return 'fas fa-calendar';
+      case 'manual':
+        return 'fas fa-plus';
       default:
         return 'fas fa-file';
     }
@@ -231,7 +292,7 @@ const TaskOverview = ({ onBack }) => {
                 <i className="fas fa-filter"></i>
                 Filter results
               </button>
-              <button className="btn-primary" onClick={() => alert('New Task functionality would be implemented here')}>
+              <button className="btn-primary" onClick={handleNewTask}>
                 <i className="fas fa-plus"></i>
                 New Task
               </button>
@@ -335,6 +396,7 @@ const TaskOverview = ({ onBack }) => {
                           onChange={(e) => handleTaskUpdate('client', e.target.value)}
                           className="form-select"
                         >
+                          <option value="">Choose Client</option>
                           <option value="Company X">Company X</option>
                           <option value="Corporation Y">Corporation Y</option>
                           <option value="Business Z">Business Z</option>
@@ -345,21 +407,45 @@ const TaskOverview = ({ onBack }) => {
                     <div className="section-right">
                       <h3>Contacts</h3>
                       <div className="contact-info">
-                        <div className="contact-person">
-                          <span className="contact-label">Contact Person</span>
-                          <span className="contact-value">{editedTask.contact}</span>
+                        <div className="form-group">
+                          <label>Contact Person</label>
+                          <input 
+                            type="text"
+                            value={editedTask.contact}
+                            onChange={(e) => handleTaskUpdate('contact', e.target.value)}
+                            className="form-input"
+                            placeholder="Enter contact person name"
+                          />
                         </div>
-                        <div className="contact-role">
-                          <span className="contact-label">Role</span>
-                          <span className="contact-value">{editedTask.contactRole}</span>
+                        <div className="form-group">
+                          <label>Role</label>
+                          <input 
+                            type="text"
+                            value={editedTask.contactRole}
+                            onChange={(e) => handleTaskUpdate('contactRole', e.target.value)}
+                            className="form-input"
+                            placeholder="Enter role/title"
+                          />
                         </div>
-                        <div className="contact-phone">
-                          <span className="contact-label">Country code</span>
-                          <span className="contact-value">{editedTask.contactPhone}</span>
+                        <div className="form-group">
+                          <label>Phone Number</label>
+                          <input 
+                            type="tel"
+                            value={editedTask.contactPhone}
+                            onChange={(e) => handleTaskUpdate('contactPhone', e.target.value)}
+                            className="form-input"
+                            placeholder="Enter phone number"
+                          />
                         </div>
-                        <div className="contact-email">
-                          <span className="contact-label">Contact Email</span>
-                          <span className="contact-value">{editedTask.contactEmail}</span>
+                        <div className="form-group">
+                          <label>Email</label>
+                          <input 
+                            type="email"
+                            value={editedTask.contactEmail}
+                            onChange={(e) => handleTaskUpdate('contactEmail', e.target.value)}
+                            className="form-input"
+                            placeholder="Enter email address"
+                          />
                         </div>
                         <button className="btn-add-contact">
                           <i className="fas fa-plus"></i>
@@ -372,19 +458,41 @@ const TaskOverview = ({ onBack }) => {
 
                 <div className="task-detail-section">
                   <h3>Asset</h3>
-                  <div className="asset-selection">
-                    <div className="asset-icon">
-                      <i className="fas fa-robot"></i>
+                  {editedTask.asset ? (
+                    <div className="asset-selection">
+                      <div className="asset-icon">
+                        <i className="fas fa-robot"></i>
+                      </div>
+                      <div className="asset-info">
+                        <div className="asset-id">{editedTask.asset}</div>
+                        <div className="asset-details">6-axis Robotic Arm, KT Series</div>
+                        <div className="asset-location">Boulevard Way 132, ZX 98765 Villagetown</div>
+                      </div>
+                      <button className="btn-refresh">
+                        <i className="fas fa-sync"></i>
+                      </button>
                     </div>
-                    <div className="asset-info">
-                      <div className="asset-id">{editedTask.asset}</div>
-                      <div className="asset-details">6-axis Robotic Arm, KT Series</div>
-                      <div className="asset-location">Boulevard Way 132, ZX 98765 Villagetown</div>
+                  ) : (
+                    <div className="asset-selection-empty">
+                      <div className="form-group">
+                        <label>Select Asset</label>
+                        <select 
+                          value={editedTask.asset}
+                          onChange={(e) => handleTaskUpdate('asset', e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="">Choose Asset</option>
+                          <option value="ABC 9876 5432">ABC 9876 5432</option>
+                          <option value="ABC 7654 2198">ABC 7654 2198</option>
+                          <option value="DEF 1234 7890">DEF 1234 7890</option>
+                          <option value="GHI 5678 1234">GHI 5678 1234</option>
+                          <option value="JKL 9999 8888">JKL 9999 8888</option>
+                          <option value="MNO 7777 6666">MNO 7777 6666</option>
+                          <option value="PQR 4444 3333">PQR 4444 3333</option>
+                        </select>
+                      </div>
                     </div>
-                    <button className="btn-refresh">
-                      <i className="fas fa-sync"></i>
-                    </button>
-                  </div>
+                  )}
                 </div>
 
                 <div className="task-detail-section">
