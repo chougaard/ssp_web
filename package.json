@@ -2,7 +2,7 @@
   "name": "smartservice-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ss-webprototype-demo.surge.sh",
+  "homepage": "https://chougaard.github.io/ssp_web",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
