@@ -27,23 +27,23 @@ const AssetDetail = ({ asset, onBack }) => {
     alarms: 59,
     model: 'XYZ-500',
     chartData: [
-      { period: '12', value: 62 },
-      { period: '13', value: 51 },
-      { period: '14', value: 58 },
-      { period: '15', value: 61 },
-      { period: '16', value: 78 },
-      { period: '17', value: 45 },
-      { period: '18', value: 68 },
-      { period: '19', value: 65 },
-      { period: '20', value: 82 },
-      { period: '21', value: 84 },
-      { period: '22', value: 69 },
-      { period: '23', value: 56 },
-      { period: '24', value: 67 },
-      { period: '25', value: 71 },
-      { period: '26', value: 82 },
-      { period: '27', value: 78 },
-      { period: '28', value: 65 }
+      { period: '12', value: 22 },
+      { period: '13', value: 18 },
+      { period: '14', value: 20 },
+      { period: '15', value: 23 },
+      { period: '16', value: 24 },
+      { period: '17', value: 12 },
+      { period: '18', value: 19 },
+      { period: '19', value: 21 },
+      { period: '20', value: 22 },
+      { period: '21', value: 24 },
+      { period: '22', value: 19 },
+      { period: '23', value: 16 },
+      { period: '24', value: 18 },
+      { period: '25', value: 20 },
+      { period: '26', value: 23 },
+      { period: '27', value: 21 },
+      { period: '28', value: 19 }
     ],
     breakdownData: {
       '00-08': 56,
@@ -218,22 +218,106 @@ const AssetDetail = ({ asset, onBack }) => {
     </div>
   );
 
-  const renderBarChart = () => (
-    <div className="bar-chart">
-      <div className="chart-title">Operating Hours Trend</div>
-      <div className="chart-container">
-        {operationalData.chartData.map((item, index) => (
-          <div key={index} className="bar-item">
-            <div 
-              className="bar" 
-              style={{ height: `${(item.value / 100) * 100}%` }}
-            ></div>
-            <span className="bar-label">{item.period}</span>
+  const renderBarChart = () => {
+    // Generate dates for the last 17 days based on chart data
+    const generateDateLabels = () => {
+      const dates = [];
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() - (operationalData.chartData.length - 1));
+      
+      for (let i = 0; i < operationalData.chartData.length; i++) {
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        dates.push({
+          short: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          full: date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          dayOfWeek: date.toLocaleDateString('en-US', { weekday: 'short' })
+        });
+      }
+      return dates;
+    };
+
+    const dateLabels = generateDateLabels();
+    const maxValue = 24; // Maximum 24 hours per day
+    
+    return (
+      <div className="bar-chart premium">
+        <div className="chart-title">Operating Hours Trend</div>
+        <div className="chart-subtitle">Daily operating hours over the last {operationalData.chartData.length} days</div>
+        
+        <div className="chart-wrapper">
+          <div className="chart-y-axis">
+            <div className="y-axis-label">Hours</div>
+            <div className="y-axis-values">
+              <span className="y-value">24</span>
+              <span className="y-value">18</span>
+              <span className="y-value">12</span>
+              <span className="y-value">6</span>
+              <span className="y-value">0</span>
+            </div>
           </div>
-        ))}
+          
+          <div className="chart-container premium">
+            <div className="chart-grid">
+              {[0, 25, 50, 75, 100].map(line => (
+                <div 
+                  key={line} 
+                  className="grid-line" 
+                  style={{ bottom: `${line}%` }}
+                ></div>
+              ))}
+            </div>
+            
+            {operationalData.chartData.map((item, index) => {
+              const percentage = (item.value / maxValue) * 100;
+              const date = dateLabels[index];
+              
+              return (
+                <div 
+                  key={index} 
+                  className="bar-item premium"
+                  data-value={item.value}
+                  data-date={date.full}
+                  data-day={date.dayOfWeek}
+                >
+                  <div 
+                    className="bar premium" 
+                    style={{ height: `${percentage}%` }}
+                  >
+                    <div className="bar-value">{item.value}h</div>
+                  </div>
+                  <div className="bar-label">
+                    <span className="date-short">{date.short}</span>
+                    <span className="day-of-week">{date.dayOfWeek}</span>
+                  </div>
+                  
+                  <div className="bar-tooltip">
+                    <div className="tooltip-header">{date.full}</div>
+                    <div className="tooltip-content">
+                      <div className="tooltip-row">
+                        <span className="tooltip-label">Operating Hours:</span>
+                        <span className="tooltip-value">{item.value}h</span>
+                      </div>
+                      <div className="tooltip-row">
+                        <span className="tooltip-label">Efficiency:</span>
+                        <span className="tooltip-value">{Math.round((item.value / 24) * 100)}%</span>
+                      </div>
+                      <div className="tooltip-row">
+                        <span className="tooltip-label">Status:</span>
+                        <span className={`tooltip-value ${item.value > 16 ? 'high' : item.value > 8 ? 'medium' : 'low'}`}>
+                          {item.value > 16 ? 'High Usage' : item.value > 8 ? 'Normal' : 'Low Usage'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderCircularChart = () => {
     const total = Object.values(operationalData.breakdownData).reduce((sum, val) => sum + val, 0);
