@@ -10,11 +10,9 @@ import ClientOverview from './components/ClientOverview';
 import { assetsData } from './data/assetsData';
 
 function App() {
-  const [assets, setAssets] = useState(assetsData);
+  const [assets] = useState(assetsData);
   const [filteredAssets, setFilteredAssets] = useState(assetsData);
   const [selectedAsset, setSelectedAsset] = useState(null);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [selectedClient, setSelectedClient] = useState(null);
   const [currentFilter, setCurrentFilter] = useState('all');
   const [showAssetDetail, setShowAssetDetail] = useState(false);
   const [currentView, setCurrentView] = useState('assets'); // 'assets', 'tasks', 'clients'
@@ -38,19 +36,12 @@ function App() {
     setCurrentView('assets');
   };
 
-  const handleTaskSelect = (task) => {
-    setSelectedTask(task);
+  const handleTaskSelect = () => {
     setCurrentView('tasks');
   };
 
-  const handleClientSelect = (client) => {
-    setSelectedClient(client);
+  const handleClientSelect = () => {
     setCurrentView('clients');
-  };
-
-  const handleBackToList = () => {
-    setShowAssetDetail(false);
-    setSelectedAsset(null);
   };
 
   const handleNewAsset = () => {
@@ -60,31 +51,13 @@ function App() {
   const handleViewChange = (view) => {
     setCurrentView(view);
     setSelectedAsset(null);
-    setSelectedTask(null);
-    setSelectedClient(null);
     setShowAssetDetail(false);
   };
 
   const handleBackToAssets = () => {
     setSelectedAsset(null);
-    setSelectedTask(null);
-    setSelectedClient(null);
     setShowAssetDetail(false);
     setCurrentView('assets');
-  };
-
-  const handleBackToTasks = () => {
-    setSelectedTask(null);
-    setSelectedAsset(null);
-    setSelectedClient(null);
-    setCurrentView('tasks');
-  };
-
-  const handleBackToClients = () => {
-    setSelectedClient(null);
-    setSelectedAsset(null);
-    setSelectedTask(null);
-    setCurrentView('clients');
   };
 
   const renderCurrentView = () => {

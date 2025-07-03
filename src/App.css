@@ -71,6 +71,11 @@ body {
   color: #8a8a8a;
   text-decoration: none;
   transition: all 0.2s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .nav-link:hover {

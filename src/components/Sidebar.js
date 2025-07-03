@@ -14,48 +14,48 @@ const Sidebar = ({ onViewChange, currentView }) => {
       </div>
       <ul className="nav-menu">
         <li className="nav-item">
-          <a href="#" className="nav-link">
+          <button type="button" className="nav-link">
             <i className="fas fa-search"></i>
-          </a>
+          </button>
         </li>
         <li className="nav-item">
-          <a href="#" className="nav-link">
+          <button type="button" className="nav-link">
             <i className="fas fa-building"></i>
-          </a>
+          </button>
         </li>
         <li className={`nav-item ${currentView === 'assets' ? 'active' : ''}`}>
-          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); handleNavClick('assets'); }}>
+          <button type="button" className="nav-link" onClick={() => handleNavClick('assets')}>
             <i className="fas fa-chart-bar"></i>
-          </a>
+          </button>
         </li>
         <li className={`nav-item ${currentView === 'tasks' ? 'active' : ''}`}>
-          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); handleNavClick('tasks'); }}>
+          <button type="button" className="nav-link" onClick={() => handleNavClick('tasks')}>
             <i className="fas fa-list"></i>
-          </a>
+          </button>
         </li>
         <li className={`nav-item ${currentView === 'clients' ? 'active' : ''}`}>
-          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); handleNavClick('clients'); }}>
+          <button type="button" className="nav-link" onClick={() => handleNavClick('clients')}>
             <i className="fas fa-users"></i>
-          </a>
+          </button>
         </li>
         <li className="nav-item">
-          <a href="#" className="nav-link">
+          <button type="button" className="nav-link">
             <i className="fas fa-calendar"></i>
-          </a>
+          </button>
         </li>
         <li className="nav-item">
-          <a href="#" className="nav-link">
+          <button type="button" className="nav-link">
             <i className="fas fa-box"></i>
-          </a>
+          </button>
         </li>
       </ul>
       <div className="nav-bottom">
-        <a href="#" className="nav-link">
+        <button type="button" className="nav-link">
           <i className="fas fa-question-circle"></i>
-        </a>
-        <a href="#" className="nav-link">
+        </button>
+        <button type="button" className="nav-link">
           <i className="fas fa-chevron-right"></i>
-        </a>
+        </button>
       </div>
     </nav>
   );

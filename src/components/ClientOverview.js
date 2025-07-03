@@ -136,7 +136,7 @@ const ClientOverview = ({ onBack, onClientSelect }) => {
     }
   ];
 
-  const [clients, setClients] = useState(clientsData);
+  const [clients] = useState(clientsData);
   const [filteredClients, setFilteredClients] = useState(clientsData);
 
   const handleFilterChange = (filter) => {

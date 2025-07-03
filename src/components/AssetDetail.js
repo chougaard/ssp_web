@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import L from 'leaflet';
 
 // Fix for default markers in react-leaflet
@@ -53,13 +53,13 @@ const AssetDetail = ({ asset, onBack }) => {
   };
 
   // Mock location data
-  const locationData = {
+  const locationData = useMemo(() => ({
     address: 'Streetname 123, Citytown 9876',
     lat: 56.1629,
     lng: 10.2039,
     city: 'Aarhus',
     country: 'Denmark'
-  };
+  }), []);
 
   // Mock documents data for Manuals & Documentation
   const documentsData = [
