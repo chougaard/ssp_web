@@ -7,16 +7,18 @@ import MapSection from './components/MapSection';
 import AssetDetail from './components/AssetDetail';
 import TaskOverview from './components/TaskOverview';
 import ClientOverview from './components/ClientOverview';
+import NewAssetDialog from './components/NewAssetDialog';
 import { assetsData } from './data/assetsData';
 
 function App() {
-  const [assets] = useState(assetsData);
+  const [assets, setAssets] = useState(assetsData);
   const [filteredAssets, setFilteredAssets] = useState(assetsData);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [currentFilter, setCurrentFilter] = useState('all');
   const [showAssetDetail, setShowAssetDetail] = useState(false);
   const [currentView, setCurrentView] = useState('assets'); // 'assets', 'tasks', 'clients'
   const [newTask, setNewTask] = useState(null); // For handling new task creation
+  const [showNewAssetDialog, setShowNewAssetDialog] = useState(false);
 
   const handleFilterChange = (filter) => {
     setCurrentFilter(filter);
@@ -46,7 +48,29 @@ function App() {
   };
 
   const handleNewAsset = () => {
-    alert('New Asset functionality would be implemented here');
+    setShowNewAssetDialog(true);
+  };
+
+  const handleCreateAsset = (newAssetData) => {
+    // Add the new asset to the assets array
+    const updatedAssets = [...assets, newAssetData];
+    setAssets(updatedAssets);
+    
+    // Update filtered assets based on current filter
+    let filtered;
+    if (currentFilter === 'all') {
+      filtered = updatedAssets;
+    } else {
+      filtered = updatedAssets.filter(asset => asset.status === currentFilter);
+    }
+    setFilteredAssets(filtered);
+    
+    // Close the dialog
+    setShowNewAssetDialog(false);
+  };
+
+  const handleCloseNewAssetDialog = () => {
+    setShowNewAssetDialog(false);
   };
 
   const handleViewChange = (view) => {
@@ -138,6 +162,11 @@ function App() {
       <main className="main-content">
         {renderCurrentView()}
       </main>
+      <NewAssetDialog
+        isOpen={showNewAssetDialog}
+        onClose={handleCloseNewAssetDialog}
+        onSubmit={handleCreateAsset}
+      />
     </div>
   );
 }
